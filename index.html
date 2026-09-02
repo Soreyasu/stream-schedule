@@ -1,0 +1,459 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title> Detective Bureau - Weekly Schedule</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Cinzel:wght@600;700&family=Cormorant+Garamond:ital,wght@0,600;0,700;1,500&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --wood-dark: #1a0f07;
+            --wood-mid: #2c1a0e;
+            --wood-light: #442816;
+            --parchment-bg: #f4ecd8;
+            --parchment-dark: #e2d2b4;
+            --gold-accent: #c59b27;
+            --gold-highlight: #f3d875;
+            --ink-dark: #1c140e;
+            --ink-muted: #5a4635;
+            --wax-red: #7c1a1a;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: #0d0805;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100dvh;
+            font-family: 'Cormorant Garamond', serif;
+            overflow: hidden;
+        }
+
+        /* Fixed 1080p Canvas */
+        .schedule-canvas {
+            width: 1920px;
+            height: 1080px;
+            background:
+                radial-gradient(ellipse at center, rgba(68, 40, 22, 0.4) 0%, rgba(13, 8, 5, 0.95) 100%),
+                repeating-linear-gradient(90deg, #160c06 0px, #201309 60px, #160c06 120px);
+            position: relative;
+            padding: 40px 60px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
+            overflow: hidden;
+        }
+
+        /* Heavy Outer Cabinet Frame */
+        .cabinet-border {
+            position: absolute;
+            inset: 20px;
+            border: 14px solid var(--wood-mid);
+            outline: 4px solid var(--gold-accent);
+            outline-offset: -10px;
+            box-shadow:
+                inset 0 0 25px rgba(0, 0, 0, 0.8),
+                0 0 30px rgba(0, 0, 0, 0.7);
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        /* Decorative Gold Corner Brackets */
+        .corner-bracket {
+            position: absolute;
+            width: 48px;
+            height: 48px;
+            border: 5px solid var(--gold-highlight);
+            z-index: 11;
+        }
+
+        .top-left {
+            top: 26px;
+            left: 26px;
+            border-right: none;
+            border-bottom: none;
+        }
+
+        .top-right {
+            top: 26px;
+            right: 26px;
+            border-left: none;
+            border-bottom: none;
+        }
+
+        .bottom-left {
+            bottom: 26px;
+            left: 26px;
+            border-right: none;
+            border-top: none;
+        }
+
+        .bottom-right {
+            bottom: 26px;
+            right: 26px;
+            border-left: none;
+            border-top: none;
+        }
+
+        /* Header Section */
+        .header {
+            height: 90px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 40px;
+            z-index: 2;
+            border-bottom: 4px solid var(--gold-accent);
+            margin-bottom: 20px;
+        }
+
+        /* Left Header Group (Title + Date Badge) */
+        .title-group {
+            display: flex;
+            align-items: center;
+            gap: 28px;
+        }
+
+        .main-title {
+            font-family: 'Cinzel Decorative', cursive;
+            font-size: 38px;
+            font-weight: 700;
+            color: var(--gold-highlight);
+            letter-spacing: 3px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 12px rgba(197, 155, 39, 0.4);
+        }
+
+        /* Dates Case Badge */
+        .date-badge {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            background: linear-gradient(180deg, rgba(32, 19, 9, 0.9) 0%, rgba(20, 11, 5, 0.9) 100%);
+            border: 2px solid var(--gold-accent);
+            padding: 6px 18px;
+            border-radius: 4px;
+            box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.5);
+        }
+
+        .date-badge .label {
+            font-family: 'Cinzel', serif;
+            font-size: 13px;
+            font-weight: 700;
+            color: var(--gold-accent);
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            border-right: 1px solid rgba(197, 155, 39, 0.4);
+            padding-right: 10px;
+        }
+
+        .date-badge .range {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            font-weight: 600;
+            color: #f4ecd8;
+            letter-spacing: 1.5px;
+        }
+
+        .sub-title {
+            font-family: 'Cinzel', serif;
+            font-size: 18px;
+            color: #d1b89d;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        /* Shelving Unit Container */
+        .shelving-unit {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            gap: 12px;
+            z-index: 2;
+            padding: 5px 20px 15px 20px;
+        }
+
+        /* Individual Shelf Row */
+        .shelf-row {
+            flex: 1;
+            display: grid;
+            grid-template-columns: 200px 160px 1fr 220px;
+            align-items: center;
+            position: relative;
+            background: linear-gradient(180deg, var(--parchment-bg) 0%, var(--parchment-dark) 100%);
+            border-radius: 4px;
+            padding: 0 25px;
+            box-shadow:
+                0 4px 8px rgba(0, 0, 0, 0.6),
+                inset 0 1px 0 rgba(255, 255, 255, 0.4),
+                inset 0 0 15px rgba(90, 70, 53, 0.3);
+            border-top: 2px solid #fff3d1;
+            border-bottom: 5px solid var(--wood-dark);
+            transition: transform 0.2s ease;
+        }
+
+        /* Wooden Shelf Divider Underneath Each Row */
+        .shelf-row::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: -15px;
+            right: -15px;
+            height: 8px;
+            background: linear-gradient(90deg, var(--wood-dark), var(--wood-light) 15%, var(--wood-mid) 85%, var(--wood-dark));
+            border-top: 1px solid var(--gold-accent);
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
+            border-radius: 2px;
+        }
+
+        /* Brass Rivets on Shelving Sides */
+        .shelf-row::before {
+            content: '◆';
+            position: absolute;
+            left: 6px;
+            color: var(--gold-accent);
+            font-size: 10px;
+            text-shadow: 0 1px 2px #000;
+        }
+
+        /* Day Column (Parchment Tag) */
+        .day-slot {
+            font-family: 'Cinzel', serif;
+            font-size: 26px;
+            font-weight: 700;
+            color: var(--ink-dark);
+            letter-spacing: 2px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Time Slot */
+        .time-slot {
+            font-size: 24px;
+            font-style: italic;
+            font-weight: 600;
+            color: var(--ink-muted);
+            border-left: 2px solid rgba(90, 70, 53, 0.3);
+            padding-left: 18px;
+        }
+
+        /* Case / Quest Title */
+        .activity-slot {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 20px;
+            border-left: 2px solid rgba(90, 70, 53, 0.3);
+        }
+
+        .case-title {
+            font-family: 'Cinzel', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--ink-dark);
+            letter-spacing: 1px;
+        }
+
+        .case-details {
+            font-size: 18px;
+            font-style: italic;
+            color: var(--ink-muted);
+        }
+
+        /* Status / Wax Seal Badge */
+        .status-slot {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-left: 2px solid rgba(90, 70, 53, 0.3);
+            padding-left: 18px;
+        }
+
+        .seal-badge {
+            font-family: 'Cinzel', serif;
+            font-size: 14px;
+            font-weight: 700;
+            width: 200px;
+            height: 60px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            padding: 6px 16px;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Dynamic Badge Styles */
+        .status-rest {
+            background: #34403a;
+            color: #c0ded2;
+            border: 2px dashed rgba(255, 255, 255, 0.3);
+        }
+
+        .status-active {
+            background: var(--wax-red);
+            color: #ffd2d2;
+            border: 2px dashed rgba(255, 255, 255, 0.4);
+        }
+
+        .status-investigation {
+            background: #1e334a;
+            color: #b8d9f7;
+            border: 2px dashed rgba(184, 217, 247, 0.4);
+        }
+
+        .status-special {
+            background: #5e4113;
+            color: #f7e099;
+            border: 2px dashed rgba(247, 224, 153, 0.5);
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="schedule-canvas">
+        <div class="cabinet-border"></div>
+        <div class="corner-bracket top-left"></div>
+        <div class="corner-bracket top-right"></div>
+        <div class="corner-bracket bottom-left"></div>
+        <div class="corner-bracket bottom-right"></div>
+
+        <header class="header">
+            <div class="title-group">
+                <div class="main-title">BUREAU DISPATCH & Roster</div>
+                <div class="date-badge">
+                    <span class="label">Docket Week</span>
+                    <span class="range" id="schedule-date-range">OCT 14 — OCT 20</span>
+                </div>
+            </div>
+            <div class="sub-title">Weekly Investigative Ledger</div>
+        </header>
+
+        <main class="shelving-unit" id="schedule-container">
+        </main>
+    </div>
+
+    <script>
+        // Header Date Configuration
+        const currentWeekRange = "Aug 31 — Sept 6 , 2026"; // Update this string to reflect the current week
+        document.getElementById("schedule-date-range").textContent = currentWeekRange;
+
+        // Schedule Data Source: Edit your entries directly here
+        const scheduleData = [
+            {
+                day: "MONDAY",
+                time: "19:00 CET - 23:00 CET",
+                title: "Final Fantasy X-2",
+                subtitle: "Blind Playthrough • Preparation for speedrunning",
+                status: "INVESTIGATION"
+            },
+            {
+                day: "TUESDAY",
+                time: "20:00 CET - 23:00 CET",
+                title: "Yu-Gi-Oh! Master Duel",
+                subtitle: "Mastering Trickstar and Shiranui/Mayakashi decks.",
+                status: "ASSIGNED"
+            },
+            {
+                day: "WEDNESDAY",
+                time: "— — —",
+                title: "Archive Bureau Resupply",
+                subtitle: "Office Closed • Offline",
+                status: "REST DAY"
+            },
+            {
+                day: "THURSDAY",
+                time: "19:00 CET - 23:00 CET",
+                title: "Final Fantasy X-2",
+                subtitle: "Blind Playthrough • Preparation for speedrunning",
+                status: "OPEN CASE"
+            },
+            {
+                day: "FRIDAY",
+                time: "19:00 CET - 23:00 CET",
+                title: "Sonic Crossworlds Racing",
+                subtitle: "Racing for the truth • Stop the bad guys",
+                status: "PUBLIC EVENT"
+            },
+            {
+                day: "SATURDAY",
+                time: "19:00 CET - 23:00 CET",
+                title: "Castlevania: Aria of Sorrow",
+                subtitle: "Speedrun Glitchless Soma • Practicing & Runs",
+                status: "LABORATORY"
+            },
+            {
+                day: "SUNDAY",
+                time: "— — —",
+                title: "Weekly Debriefing & Maintenance",
+                subtitle: "Docket Prep for Next Cycle",
+                status: "REST DAY"
+            }
+        ];
+
+        // Helper: Inspects the status string dynamically and returns the proper class
+        function resolveStatusClass(statusText) {
+            const text = statusText.toUpperCase();
+
+            // Rest / Offline keywords
+            if (text.includes("REST") || text.includes("OFFLINE") || text.includes("CLOSED")) {
+                return "status-rest";
+            }
+
+            // Tactical / Direct Action keywords (Red Wax)
+            if (text.includes("PATROL") || text.includes("TACTICAL") || text.includes("LIVE")) {
+                return "status-active";
+            }
+
+            // Research / In-depth Case files (Blue Wax)
+            if (text.includes("CASE") || text.includes("LAB") || text.includes("INVESTIGATION")) {
+                return "status-investigation";
+            }
+
+            // Tournaments / Special events (Gold Wax)
+            if (text.includes("SPECIAL") || text.includes("EVENT") || text.includes("PUBLIC") || text.includes("DUEL")) {
+                return "status-special";
+            }
+
+            // Fallback default
+            return "status-active";
+        }
+        function renderSchedule() {
+            const container = document.getElementById("schedule-container");
+            container.innerHTML = scheduleData.map(item => `
+        <div class="shelf-row">
+          <div class="day-slot">${item.day}</div>
+          <div class="time-slot">${item.time}</div>
+          <div class="activity-slot">
+            <div class="case-title">${item.title}</div>
+            <div class="case-details">${item.subtitle}</div>
+          </div>
+          <div class="status-slot">
+            <span class="seal-badge ${resolveStatusClass(item.status)}">${item.status}</span>
+          </div>
+        </div>
+      `).join('');
+        }
+
+        renderSchedule();
+    </script>
+</body>
+
+</html>
