@@ -3,7 +3,8 @@
 
 <head>
     <meta charset="UTF-8">
-    <title> Detective Bureau - Weekly Schedule</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detective Bureau - Weekly Schedule</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -38,31 +39,31 @@
             align-items: center;
             min-height: 100dvh;
             font-family: 'Cormorant Garamond', serif;
-            overflow: hidden;
+            padding: 16px;
         }
 
-        /* Fixed 1080p Canvas */
+        /* Responsive Canvas Container */
         .schedule-canvas {
-            width: 1920px;
-            height: 1080px;
+            width: 100%;
+            max-width: 1920px;
+            min-height: min(1080px, 100dvh - 32px);
             background:
                 radial-gradient(ellipse at center, rgba(68, 40, 22, 0.4) 0%, rgba(13, 8, 5, 0.95) 100%),
                 repeating-linear-gradient(90deg, #160c06 0px, #201309 60px, #160c06 120px);
             position: relative;
-            padding: 40px 60px;
+            padding: clamp(20px, 3.5vw, 40px) clamp(20px, 4vw, 60px);
             display: flex;
             flex-direction: column;
             box-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
-            overflow: hidden;
         }
 
-        /* Heavy Outer Cabinet Frame */
+        /* Cabinet Frame */
         .cabinet-border {
             position: absolute;
-            inset: 20px;
-            border: 14px solid var(--wood-mid);
-            outline: 4px solid var(--gold-accent);
-            outline-offset: -10px;
+            inset: clamp(10px, 1.5vw, 20px);
+            border: clamp(8px, 1vw, 14px) solid var(--wood-mid);
+            outline: 3px solid var(--gold-accent);
+            outline-offset: -8px;
             box-shadow:
                 inset 0 0 25px rgba(0, 0, 0, 0.8),
                 0 0 30px rgba(0, 0, 0, 0.7);
@@ -70,111 +71,114 @@
             z-index: 10;
         }
 
-        /* Decorative Gold Corner Brackets */
+        /* Decorative Corner Brackets */
         .corner-bracket {
             position: absolute;
-            width: 48px;
-            height: 48px;
-            border: 5px solid var(--gold-highlight);
+            width: clamp(28px, 3vw, 48px);
+            height: clamp(28px, 3vw, 48px);
+            border: clamp(3px, 0.3vw, 5px) solid var(--gold-highlight);
             z-index: 11;
+            pointer-events: none;
         }
 
         .top-left {
-            top: 26px;
-            left: 26px;
+            top: clamp(14px, 1.8vw, 26px);
+            left: clamp(14px, 1.8vw, 26px);
             border-right: none;
             border-bottom: none;
         }
 
         .top-right {
-            top: 26px;
-            right: 26px;
+            top: clamp(14px, 1.8vw, 26px);
+            right: clamp(14px, 1.8vw, 26px);
             border-left: none;
             border-bottom: none;
         }
 
         .bottom-left {
-            bottom: 26px;
-            left: 26px;
+            bottom: clamp(14px, 1.8vw, 26px);
+            left: clamp(14px, 1.8vw, 26px);
             border-right: none;
             border-top: none;
         }
 
         .bottom-right {
-            bottom: 26px;
-            right: 26px;
+            bottom: clamp(14px, 1.8vw, 26px);
+            right: clamp(14px, 1.8vw, 26px);
             border-left: none;
             border-top: none;
         }
 
         /* Header Section */
         .header {
-            height: 90px;
+            min-height: 80px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 0 40px;
+            flex-wrap: wrap;
+            gap: 16px;
+            padding: 0 clamp(10px, 2vw, 40px) 16px clamp(10px, 2vw, 40px);
             z-index: 2;
             border-bottom: 4px solid var(--gold-accent);
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        /* Left Header Group (Title + Date Badge) */
         .title-group {
             display: flex;
             align-items: center;
-            gap: 28px;
+            flex-wrap: wrap;
+            gap: clamp(12px, 2vw, 28px);
         }
 
         .main-title {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: 38px;
+            font-size: clamp(24px, 2.3vw, 38px);
             font-weight: 700;
             color: var(--gold-highlight);
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.9), 0 0 12px rgba(197, 155, 39, 0.4);
         }
 
         /* Dates Case Badge */
         .date-badge {
-            display: flex;
+            display: inline-flex;
             align-items: center;
-            gap: 12px;
+            gap: 10px;
             background: linear-gradient(180deg, rgba(32, 19, 9, 0.9) 0%, rgba(20, 11, 5, 0.9) 100%);
             border: 2px solid var(--gold-accent);
-            padding: 6px 18px;
+            padding: 5px 14px;
             border-radius: 4px;
             box-shadow: inset 0 0 8px rgba(0, 0, 0, 0.8), 0 2px 6px rgba(0, 0, 0, 0.5);
         }
 
         .date-badge .label {
             font-family: 'Cinzel', serif;
-            font-size: 13px;
+            font-size: clamp(11px, 0.8vw, 13px);
             font-weight: 700;
             color: var(--gold-accent);
-            letter-spacing: 2px;
+            letter-spacing: 1.5px;
             text-transform: uppercase;
             border-right: 1px solid rgba(197, 155, 39, 0.4);
-            padding-right: 10px;
+            padding-right: 8px;
         }
 
         .date-badge .range {
             font-family: 'Cinzel', serif;
-            font-size: 18px;
+            font-size: clamp(13px, 1vw, 18px);
             font-weight: 600;
             color: #f4ecd8;
-            letter-spacing: 1.5px;
+            letter-spacing: 1px;
         }
 
         .sub-title {
             font-family: 'Cinzel', serif;
-            font-size: 18px;
+            font-size: clamp(14px, 1.1vw, 18px);
             color: #d1b89d;
-            letter-spacing: 3px;
+            letter-spacing: 2px;
             text-transform: uppercase;
         }
 
-        /* Shelving Unit Container */
+        /* Shelving Unit */
         .shelving-unit {
             flex: 1;
             display: flex;
@@ -182,43 +186,42 @@
             justify-content: space-between;
             gap: 12px;
             z-index: 2;
-            padding: 5px 20px 15px 20px;
+            padding: 5px clamp(5px, 1.2vw, 20px) 15px clamp(5px, 1.2vw, 20px);
         }
 
-        /* Individual Shelf Row */
+        /* Shelf Row */
         .shelf-row {
             flex: 1;
             display: grid;
-            grid-template-columns: 200px 160px 1fr 220px;
+            grid-template-columns: minmax(130px, 180px) minmax(140px, 200px) 1fr auto;
             align-items: center;
             position: relative;
             background: linear-gradient(180deg, var(--parchment-bg) 0%, var(--parchment-dark) 100%);
             border-radius: 4px;
-            padding: 0 25px;
+            padding: 8px clamp(12px, 1.5vw, 25px);
             box-shadow:
                 0 4px 8px rgba(0, 0, 0, 0.6),
                 inset 0 1px 0 rgba(255, 255, 255, 0.4),
                 inset 0 0 15px rgba(90, 70, 53, 0.3);
             border-top: 2px solid #fff3d1;
             border-bottom: 5px solid var(--wood-dark);
-            transition: transform 0.2s ease;
+            min-height: 75px;
         }
 
-        /* Wooden Shelf Divider Underneath Each Row */
+        /* Shelf Underneath */
         .shelf-row::after {
             content: '';
             position: absolute;
-            bottom: -10px;
-            left: -15px;
-            right: -15px;
-            height: 8px;
+            bottom: -9px;
+            left: -10px;
+            right: -10px;
+            height: 7px;
             background: linear-gradient(90deg, var(--wood-dark), var(--wood-light) 15%, var(--wood-mid) 85%, var(--wood-dark));
             border-top: 1px solid var(--gold-accent);
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.7);
             border-radius: 2px;
         }
 
-        /* Brass Rivets on Shelving Sides */
         .shelf-row::before {
             content: '◆';
             position: absolute;
@@ -228,78 +231,77 @@
             text-shadow: 0 1px 2px #000;
         }
 
-        /* Day Column (Parchment Tag) */
         .day-slot {
             font-family: 'Cinzel', serif;
-            font-size: 26px;
+            font-size: clamp(17px, 1.4vw, 25px);
             font-weight: 700;
             color: var(--ink-dark);
-            letter-spacing: 2px;
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            letter-spacing: 1.5px;
+            padding-right: 12px;
         }
 
-        /* Time Slot */
         .time-slot {
-            font-size: 24px;
+            font-size: clamp(14px, 1.1vw, 20px);
             font-style: italic;
             font-weight: 600;
             color: var(--ink-muted);
             border-left: 2px solid rgba(90, 70, 53, 0.3);
-            padding-left: 18px;
+            padding: 0 clamp(8px, 1vw, 16px);
         }
 
-        /* Case / Quest Title */
         .activity-slot {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 0 20px;
+            padding: 0 clamp(10px, 1.2vw, 20px);
             border-left: 2px solid rgba(90, 70, 53, 0.3);
         }
 
         .case-title {
             font-family: 'Cinzel', serif;
-            font-size: 24px;
+            font-size: clamp(16px, 1.3vw, 23px);
             font-weight: 700;
             color: var(--ink-dark);
             letter-spacing: 1px;
+            line-height: 1.2;
         }
 
         .case-details {
-            font-size: 18px;
+            font-size: clamp(13px, 1vw, 17px);
             font-style: italic;
             color: var(--ink-muted);
+            margin-top: 2px;
         }
 
-        /* Status / Wax Seal Badge */
         .status-slot {
             display: flex;
             justify-content: center;
             align-items: center;
             border-left: 2px solid rgba(90, 70, 53, 0.3);
-            padding-left: 18px;
+            padding-left: clamp(10px, 1.2vw, 18px);
         }
 
         .seal-badge {
             font-family: 'Cinzel', serif;
-            font-size: 14px;
+            font-size: clamp(11px, 0.8vw, 14px);
             font-weight: 700;
-            width: 200px;
-            height: 60px;
+            width: clamp(140px, 11vw, 200px);
+            height: clamp(44px, 3.5vw, 56px);
             letter-spacing: 1.5px;
             text-transform: uppercase;
-            padding: 6px 16px;
-            border-radius: 10px;
+            padding: 4px 10px;
+            border-radius: 8px;
             box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
             display: flex;
             text-align: center;
             justify-content: center;
             align-items: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
-        /* Dynamic Badge Styles */
+        /* Dynamic Badges */
         .status-rest {
             background: #34403a;
             color: #c0ded2;
@@ -322,6 +324,74 @@
             background: #5e4113;
             color: #f7e099;
             border: 2px dashed rgba(247, 224, 153, 0.5);
+        }
+
+        /* ============================================================
+           MOBILE & TABLET ADAPTATIONS
+           ============================================================ */
+
+        @media (max-width: 900px) {
+            body {
+                padding: 6px;
+                overflow-y: auto;
+            }
+
+            .schedule-canvas {
+                min-height: auto;
+                outline-offset: -4px;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 10px;
+            }
+
+            .shelf-row {
+                grid-template-columns: 1fr auto;
+                grid-template-areas:
+                    "day time"
+                    "activity activity"
+                    "badge badge";
+                gap: 8px;
+                padding: 14px 18px;
+            }
+
+            .day-slot {
+                grid-area: day;
+                padding-right: 0;
+            }
+
+            .time-slot {
+                grid-area: time;
+                text-align: right;
+                border-left: none;
+                padding: 0;
+            }
+
+            .activity-slot {
+                grid-area: activity;
+                border-left: none;
+                border-top: 1px solid rgba(90, 70, 53, 0.25);
+                border-bottom: 1px solid rgba(90, 70, 53, 0.25);
+                padding: 8px 0;
+            }
+
+            .status-slot {
+                grid-area: badge;
+                border-left: none;
+                padding-left: 0;
+                justify-content: stretch;
+            }
+
+            .seal-badge {
+                width: 100%;
+                height: 42px;
+            }
+
+            .shelf-row::before {
+                display: none;
+            }
         }
     </style>
 </head>
@@ -346,21 +416,18 @@
             <div class="sub-title">Weekly Investigative Ledger</div>
         </header>
 
-        <main class="shelving-unit" id="schedule-container">
-        </main>
+        <main class="shelving-unit" id="schedule-container"></main>
     </div>
 
     <script>
-        // Header Date Configuration
-        const currentWeekRange = "Aug 31 — Sept 6 , 2026"; // Update this string to reflect the current week
+        const currentWeekRange = "Aug 31 — Sept 6 , 2026";
         document.getElementById("schedule-date-range").textContent = currentWeekRange;
 
-        // Schedule Data Source: Edit your entries directly here
         const scheduleData = [
             {
                 day: "MONDAY",
                 time: "— — —",
-                 title: "Cleanup Office",
+                title: "Review cases",
                 subtitle: "Office Closed • Offline",
                 status: "REST DAY"
             },
@@ -376,7 +443,7 @@
                 time: "19:00 CET - 23:00 CET",
                 title: "Final Fantasy X-2",
                 subtitle: "Blind Playthrough • Preparation for speedrunning",
-                status: "OPEN CASE"
+                status: "INVESTIGATION"
             },
             {
                 day: "THURSDAY",
@@ -387,8 +454,8 @@
             },
             {
                 day: "FRIDAY",
-                 time: "— — —",
-                title: "Archive Bureau Resupply",
+                time: "— — —",
+                title: "Review cases",
                 subtitle: "Office Closed • Offline",
                 status: "REST DAY"
             },
@@ -408,48 +475,39 @@
             }
         ];
 
-        // Helper: Inspects the status string dynamically and returns the proper class
         function resolveStatusClass(statusText) {
             const text = statusText.toUpperCase();
 
-            // Rest / Offline keywords
             if (text.includes("REST") || text.includes("OFFLINE") || text.includes("CLOSED")) {
                 return "status-rest";
             }
-
-            // Tactical / Direct Action keywords (Red Wax)
             if (text.includes("PATROL") || text.includes("TACTICAL") || text.includes("LIVE")) {
                 return "status-active";
             }
-
-            // Research / In-depth Case files (Blue Wax)
             if (text.includes("CASE") || text.includes("LAB") || text.includes("INVESTIGATION")) {
                 return "status-investigation";
             }
-
-            // Tournaments / Special events (Gold Wax)
             if (text.includes("SPECIAL") || text.includes("EVENT") || text.includes("PUBLIC") || text.includes("DUEL")) {
                 return "status-special";
             }
-
-            // Fallback default
             return "status-active";
         }
+
         function renderSchedule() {
             const container = document.getElementById("schedule-container");
             container.innerHTML = scheduleData.map(item => `
-        <div class="shelf-row">
-          <div class="day-slot">${item.day}</div>
-          <div class="time-slot">${item.time}</div>
-          <div class="activity-slot">
-            <div class="case-title">${item.title}</div>
-            <div class="case-details">${item.subtitle}</div>
-          </div>
-          <div class="status-slot">
-            <span class="seal-badge ${resolveStatusClass(item.status)}">${item.status}</span>
-          </div>
-        </div>
-      `).join('');
+                <div class="shelf-row">
+                    <div class="day-slot">${item.day}</div>
+                    <div class="time-slot">${item.time}</div>
+                    <div class="activity-slot">
+                        <div class="case-title">${item.title}</div>
+                        <div class="case-details">${item.subtitle}</div>
+                    </div>
+                    <div class="status-slot">
+                        <span class="seal-badge ${resolveStatusClass(item.status)}">${item.status}</span>
+                    </div>
+                </div>
+            `).join('');
         }
 
         renderSchedule();
