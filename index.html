@@ -117,7 +117,7 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 16px;
-            padding: 0 clamp(10px, 2vw, 40px) 16px clamp(10px, 2vw, 40px);
+            padding: 2px clamp(10px, 2vw, 0px) 16px clamp(10px, 2vw, 0px);
             z-index: 2;
             border-bottom: 4px solid var(--gold-accent);
             margin-bottom: 16px;
@@ -132,7 +132,8 @@
 
         .main-title {
             font-family: 'Cinzel Decorative', cursive;
-            font-size: clamp(24px, 2.3vw, 38px);
+            padding: clamp(4px, 0.5vw, 8px) clamp(8px, 1vw, 16px);
+            font-size: clamp(18px, 2.3vw, 38px);
             font-weight: 700;
             color: var(--gold-highlight);
             letter-spacing: 2px;
@@ -176,6 +177,7 @@
             color: #d1b89d;
             letter-spacing: 2px;
             text-transform: uppercase;
+            padding-left: 12px;
         }
 
         /* Shelving Unit */
@@ -241,7 +243,7 @@
         }
 
         .time-slot {
-            font-size: clamp(14px, 1.1vw, 20px);
+            font-size: clamp(14px, 2vw, 28px);
             font-style: italic;
             font-weight: 600;
             color: var(--ink-muted);
@@ -427,7 +429,7 @@
             {
                 day: "MONDAY",
                 time: "— — —",
-                title: "Review cases",
+                title: "Review case files & prepare for the week",
                 subtitle: "Office Closed • Offline",
                 status: "REST DAY"
             },
@@ -455,7 +457,7 @@
             {
                 day: "FRIDAY",
                 time: "— — —",
-                title: "Review cases",
+                title: "Mandatory Bureau Maintenance & Inventory",
                 subtitle: "Office Closed • Offline",
                 status: "REST DAY"
             },
