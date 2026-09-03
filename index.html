@@ -195,7 +195,7 @@
         .shelf-row {
             flex: 1;
             display: grid;
-            grid-template-columns: minmax(130px, 180px) minmax(140px, 200px) 1fr auto;
+            grid-template-columns: minmax(130px, 200px) minmax(140px, 180px) 1fr auto;
             align-items: center;
             position: relative;
             background: linear-gradient(180deg, var(--parchment-bg) 0%, var(--parchment-dark) 100%);
@@ -240,6 +240,7 @@
             color: var(--ink-dark);
             letter-spacing: 1.5px;
             padding-right: 12px;
+            margin-right: 8px;
         }
 
         .time-slot {
@@ -422,7 +423,7 @@
     </div>
 
     <script>
-        const currentWeekRange = "Aug 31 — Sept 6 , 2026";
+        const currentWeekRange = "Sept 7 - Sept 13, 2026";
         document.getElementById("schedule-date-range").textContent = currentWeekRange;
 
         const scheduleData = [
@@ -471,7 +472,7 @@
             {
                 day: "SUNDAY",
                 time: "— — —",
-                title: "Weekly Debriefing",
+                title: "Weekly Debriefing & Maintenance",
                 subtitle: "Docket Prep for Next Cycle",
                 status: "REST DAY"
             }
