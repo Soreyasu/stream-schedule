@@ -252,13 +252,31 @@
             box-shadow: 0 0 12px var(--gold-accent);
         }
 
+        .shelf-row.is-today {
+            background: rgba(32, 40, 58, 0.95);
+            border-color: var(--gold-accent);
+            box-shadow:
+                0 0 25px rgba(212, 175, 55, 0.15),
+                inset 0 0 15px rgba(212, 175, 55, 0.08);
+            transform: translateX(6px);
+        }
+
+        .shelf-row.is-today::before {
+            background: var(--gold-accent);
+            box-shadow: 0 0 15px var(--gold-accent);
+        }
+
+        .shelf-row.is-today .day-slot {
+            color: var(--gold-accent);
+            text-shadow: 0 0 12px rgba(212, 175, 55, 0.4);
+        }
+
         .day-slot {
             font-family: 'Syne', sans-serif;
             font-size: clamp(20px, 1.5vw, 25px);
             font-weight: 700;
             color: #ffffff;
             letter-spacing: 0.6px;
-            
         }
 
         .time-slot {
@@ -470,8 +488,9 @@
     <script>
         const currentWeekRange = "Aug 31 — Sept 6, 2026";
         document.getElementById("schedule-date-range").textContent = currentWeekRange;
-        // Set your broadcast base timezone once
-        const BASE_TIMEZONE = "Europe/Brussels"; // or "CET"
+
+        // Base timezone of your broadcast
+        const BASE_TIMEZONE = "Europe/Brussels";
 
         const scheduleData = [
             {
@@ -532,58 +551,60 @@
             }
         ];
 
-        function formatLocalTimeRange(startStr, endStr) {
-            if (!startStr || !endStr) return "— — —";
+        // Accurately converts a time from your broadcast timezone to the viewer's local device clock
+        function convertBroadcastTimeToLocal(timeStr) {
+            if (!timeStr) return null;
 
-            // Use today's calendar date purely to construct the moment in time
-            const today = new Date().toISOString().split("T")[0];
+            const [targetHours, targetMinutes] = timeStr.split(":").map(Number);
+            const now = new Date();
+            const year = now.getFullYear();
+            const month = String(now.getMonth() + 1).padStart(2, "0");
+            const day = String(now.getDate()).padStart(2, "0");
 
-            // Helper to calculate the difference between your timezone and the viewer's
-            const parseTimeToViewerLocal = (timeString) => {
-                // Construct an ISO date-time string assumed to be in your home timezone
-                const testDate = new Date(`${today}T${timeString}:00`);
+            // 1. Initial UTC guess
+            const initialUtc = new Date(`${year}-${month}-${day}T${String(targetHours).padStart(2, "0")}:${String(targetMinutes).padStart(2, "0")}:00Z`);
 
-                // Formatter to read your source timezone's current offset
-                const sourceFormatter = new Intl.DateTimeFormat("en-US", {
-                    timeZone: BASE_TIMEZONE,
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false
-                });
-
-                // Determine offset shift between base zone and viewer's browser
-                const targetFormatter = new Intl.DateTimeFormat(navigator.language || "en-US", {
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    hour12: false,
-                    timeZoneName: "short"
-                });
-
-                return targetFormatter.formatToParts(testDate);
-            };
-
-            // Formatter directly reading viewer's local device clock
-            const timeFormatter = new Intl.DateTimeFormat(navigator.language || "en-US", {
-                hour: "2-digit",
-                minute: "2-digit",
+            // 2. Measure what time it actually is in the broadcast timezone at that instant
+            const formatter = new Intl.DateTimeFormat("en-US", {
+                timeZone: BASE_TIMEZONE,
+                hour: "numeric",
+                minute: "numeric",
                 hour12: false
             });
 
-            const tzFormatter = new Intl.DateTimeFormat(navigator.language || "en-US", {
+            const parts = formatter.formatToParts(initialUtc);
+            const currentBroadcastHour = parseInt(parts.find(p => p.type === "hour").value, 10) % 24;
+            const currentBroadcastMin = parseInt(parts.find(p => p.type === "minute").value, 10);
+
+            // 3. Calculate minute difference and derive the true UTC moment
+            const diffMinutes = ((currentBroadcastHour * 60) + currentBroadcastMin) - ((targetHours * 60) + targetMinutes);
+            const actualStreamDateUtc = new Date(initialUtc.getTime() - (diffMinutes * 60 * 1000));
+
+            // 4. Format into viewer's local clock
+            const localTimeStr = new Intl.DateTimeFormat(navigator.language || "en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            }).format(actualStreamDateUtc);
+
+            // 5. Get viewer's local timezone abbreviation (e.g., EDT, PST, CET)
+            const tzName = new Intl.DateTimeFormat(navigator.language || "en-US", {
                 timeZoneName: "short"
-            });
+            }).formatToParts(actualStreamDateUtc).find(p => p.type === "timeZoneName")?.value || "";
 
-            // Create anchor dates
-            const startObj = new Date(`${today}T${startStr}:00`);
-            const endObj = new Date(`${today}T${endStr}:00`);
+            return {
+                time: localTimeStr,
+                tz: tzName
+            };
+        }
 
-            const localStart = timeFormatter.format(startObj);
-            const localEnd = timeFormatter.format(endObj);
+        function formatLocalTimeRange(startStr, endStr) {
+            if (!startStr || !endStr) return "— — —";
 
-            // Extract short timezone abbreviation (e.g. CET, EST, BST)
-            const tzName = tzFormatter.formatToParts(startObj).find(p => p.type === "timeZoneName")?.value || "";
+            const startObj = convertBroadcastTimeToLocal(startStr);
+            const endObj = convertBroadcastTimeToLocal(endStr);
 
-            return `${localStart} – ${localEnd} ${tzName}`.trim();
+            return `${startObj.time} – ${endObj.time} ${startObj.tz}`.trim();
         }
 
         function resolveStatusClass(statusText) {
@@ -607,13 +628,18 @@
             const container = document.getElementById("schedule-container");
             if (!container) return;
 
+            // Highlight current active weekday
+            const dayMap = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
+            const currentDayName = dayMap[new Date().getDay()];
+
             container.innerHTML = scheduleData.map(item => {
                 const badgeClass = resolveStatusClass(item.status);
                 const localTime = formatLocalTimeRange(item.start, item.end);
                 const isRest = badgeClass === "status-rest";
+                const isToday = item.day.toUpperCase() === currentDayName;
 
                 return `
-                    <div class="shelf-row" style="${isRest ? 'opacity: 0.6;' : ''}">
+                    <div class="shelf-row ${isToday ? 'is-today' : ''}" style="${isRest && !isToday ? 'opacity: 0.6;' : ''}">
                         <div class="day-slot">${item.day}</div>
                         <div class="time-slot">${localTime}</div>
                         <div class="activity-slot">
