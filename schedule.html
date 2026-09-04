@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detective Bureau - Modern Intelligence Roster</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-void: #090a0d;
+            --surface-glass: rgba(18, 22, 31, 0.7);
+            --surface-glass-hover: rgba(26, 32, 45, 0.85);
+            --border-subtle: rgba(255, 255, 255, 0.08);
+            --border-highlight: rgba(220, 175, 75, 0.35);
+            --text-primary: #f0f3f8;
+            --text-muted: #8b95a5;
+            --gold-accent: #d4af37;
+
+            --status-rest-bg: rgba(75, 85, 99, 0.15);
+            --status-rest-text: #9ca3af;
+            --status-rest-border: rgba(156, 163, 175, 0.25);
+
+            --status-active-bg: rgba(239, 68, 68, 0.12);
+            --status-active-text: #f87171;
+            --status-active-border: rgba(239, 68, 68, 0.35);
+
+            --status-case-bg: rgba(59, 130, 246, 0.12);
+            --status-case-text: #60a5fa;
+            --status-case-border: rgba(59, 130, 246, 0.35);
+
+            --status-special-bg: rgba(234, 179, 8, 0.12);
+            --status-special-text: #facc15;
+            --status-special-border: rgba(234, 179, 8, 0.35);
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            min-height: 100dvh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            padding: 25px;
+            color: var(--text-primary);
+            overflow-y: auto;
+        }
+
+        .schedule-canvas {
+            width: 100%;
+            max-width: 1800px;
+            min-height: auto;
+            background:
+                radial-gradient(ellipse at 80% 0%, rgba(212, 175, 55, 0.05) 0%, transparent 60%),
+                radial-gradient(circle at 10% 90%, rgba(30, 58, 138, 0.12) 0%, transparent 50%),
+                #0c0f14;
+            border-radius: 20px;
+            border: 1px solid var(--border-subtle);
+            box-shadow: 0 30px 75px -15px rgba(0, 0, 0, 0.9), 0 0 1px 1px rgba(255, 255, 255, 0.05);
+            padding: clamp(30px, 3.75vw, 55px) clamp(30px, 4.3vw, 70px);
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            padding-bottom: 30px;
+            border-bottom: 1px solid var(--border-subtle);
+            margin-bottom: 30px;
+            position: relative;
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 10px;
+            margin-left: auto;
+        }
+
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -1px;
+            left: 0;
+            width: 175px;
+            height: 3px;
+            background: linear-gradient(90deg, var(--gold-accent), transparent);
+        }
+
+        .title-group {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            gap: 10px;
+        }
+
+        .main-title {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(30px, 2.75vw, 45px);
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            color: #ffffff;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .main-title span {
+            color: var(--gold-accent);
+        }
+
+        .date-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--border-subtle);
+            padding: 10px 22px;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .date-badge .label {
+            font-size: 21px;
+            font-weight: 700;
+            color: var(--gold-accent);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        .date-badge .range {
+            font-size: 23px;
+            font-weight: 500;
+            color: #d1d5db;
+        }
+
+        .sub-title {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 19px;
+            color: var(--text-muted);
+            letter-spacing: 1.8px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .sub-title::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: #22c55e;
+            box-shadow: 0 0 10px #22c55e;
+        }
+
+        .twitch-btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 12px;
+            background: rgba(145, 71, 255, 0.12);
+            color: #cbb4ff;
+            border: 1px solid rgba(145, 71, 255, 0.35);
+            padding: 10px 20px;
+            border-radius: 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 15px;
+            font-weight: 700;
+            letter-spacing: 1.2px;
+            text-decoration: none;
+            text-transform: uppercase;
+            transition: all 0.25s ease;
+        }
+
+        .twitch-btn svg {
+            width: 20px;
+            height: 20px;
+            fill: currentColor;
+        }
+
+        .twitch-btn:hover {
+            background: #9146ff;
+            color: #ffffff;
+            border-color: #9146ff;
+            box-shadow: 0 0 25px rgba(145, 71, 255, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .shelving-unit {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+        }
+
+        .shelf-row {
+            flex-shrink: 0;
+            min-height: 108px;
+            display: grid;
+            grid-template-columns: minmax(160px, 220px) minmax(260px, 305px) 1fr auto;
+            align-items: center;
+            position: relative;
+            background: var(--surface-glass);
+            backdrop-filter: blur(12px);
+            border-radius: 12px;
+            border: 1px solid var(--border-subtle);
+            padding: 15px clamp(20px, 2.25vw, 35px);
+            transition: all 0.25s ease;
+        }
+
+        .shelf-row:hover {
+            background: var(--surface-glass-hover);
+            border-color: var(--border-highlight);
+            transform: translateX(5px);
+        }
+
+        .shelf-row::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 20%;
+            bottom: 20%;
+            width: 4px;
+            background: transparent;
+            border-radius: 0 4px 4px 0;
+            transition: background 0.25s ease;
+        }
+
+        .shelf-row:hover::before {
+            background: var(--gold-accent);
+            box-shadow: 0 0 12px var(--gold-accent);
+        }
+
+        .day-slot {
+            font-family: 'Syne', sans-serif;
+            font-size: clamp(20px, 1.5vw, 25px);
+            font-weight: 700;
+            color: #ffffff;
+            letter-spacing: 0.6px;
+            
+        }
+
+        .time-slot {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: clamp(15px, 1.05vw, 17px);
+            font-weight: 500;
+            color: var(--gold-accent);
+            padding: 0 20px;
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        .activity-slot {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 0 25px;
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        .case-title {
+            font-size: clamp(20px, 1.5vw, 25px);
+            font-weight: 700;
+            color: #f8fafc;
+            letter-spacing: -0.2px;
+        }
+
+        .case-details {
+            font-size: clamp(16px, 1.05vw, 18px);
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .status-slot {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding-left: 25px;
+            border-left: 1px solid var(--border-subtle);
+        }
+
+        .seal-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            width: 212px;
+            height: 48px;
+            letter-spacing: 1.2px;
+            text-transform: uppercase;
+            border-radius: 8px;
+            display: flex;
+            text-align: center;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .seal-badge::before {
+            content: '';
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .status-rest {
+            background: var(--status-rest-bg);
+            color: var(--status-rest-text);
+            border: 1px solid var(--status-rest-border);
+        }
+
+        .status-rest::before {
+            background: var(--status-rest-text);
+        }
+
+        .status-active {
+            background: var(--status-active-bg);
+            color: var(--status-active-text);
+            border: 1px solid var(--status-active-border);
+        }
+
+        .status-active::before {
+            background: var(--status-active-text);
+            box-shadow: 0 0 8px var(--status-active-text);
+        }
+
+        .status-investigation {
+            background: var(--status-case-bg);
+            color: var(--status-case-text);
+            border: 1px solid var(--status-case-border);
+        }
+
+        .status-investigation::before {
+            background: var(--status-case-text);
+            box-shadow: 0 0 8px var(--status-case-text);
+        }
+
+        .status-special {
+            background: var(--status-special-bg);
+            color: var(--status-special-text);
+            border: 1px solid var(--status-special-border);
+        }
+
+        .status-special::before {
+            background: var(--status-special-text);
+            box-shadow: 0 0 8px var(--status-special-text);
+        }
+
+        @media (max-width: 900px) {
+            body {
+                padding: 10px;
+            }
+
+            .schedule-canvas {
+                min-height: auto;
+                padding: 24px 18px;
+            }
+
+            .title-group {
+                align-items: center;
+                text-align: center;
+            }
+
+            .header {
+                flex-direction: column;
+                align-items: center;
+                gap: 20px;
+            }
+
+            .header-actions {
+                align-items: center;
+                margin-left: 0;
+                width: 100%;
+            }
+
+            .twitch-btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .shelf-row {
+                grid-template-columns: 1fr auto;
+                grid-template-areas:
+                    "day time"
+                    "activity activity"
+                    "badge badge";
+                gap: 15px;
+                padding: 18px;
+            }
+
+            .day-slot {
+                grid-area: day;
+            }
+
+            .time-slot {
+                grid-area: time;
+                text-align: right;
+                border-left: none;
+                padding: 0;
+            }
+
+            .activity-slot {
+                grid-area: activity;
+                border-left: none;
+                border-top: 1px solid var(--border-subtle);
+                border-bottom: 1px solid var(--border-subtle);
+                padding: 12px 0;
+            }
+
+            .status-slot {
+                grid-area: badge;
+                border-left: none;
+                padding-left: 0;
+            }
+
+            .seal-badge {
+                width: 100%;
+                height: 48px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="schedule-canvas">
+        <header class="header">
+            <div class="title-group">
+                <h1 class="main-title">BUREAU DISPATCH <span>//</span> ROSTER</h1>
+                <div class="date-badge">
+                    <span class="label">Docket</span>
+                    <span class="range" id="schedule-date-range">Aug 31 — Sept 6, 2026</span>
+                </div>
+            </div>
+
+            <div class="header-actions">
+                <div class="sub-title">Active Investigative Feed</div>
+
+                <a href="https://twitch.tv/Soreyasu" target="_blank" rel="noopener noreferrer" class="twitch-btn">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z" />
+                    </svg>
+                    <span>Twitch Live</span>
+                </a>
+            </div>
+        </header>
+
+        <main class="shelving-unit" id="schedule-container"></main>
+    </div>
+
+    <script>
+        const currentWeekRange = "Aug 31 — Sept 6, 2026";
+        document.getElementById("schedule-date-range").textContent = currentWeekRange;
+        // Set your broadcast base timezone once
+        const BASE_TIMEZONE = "Europe/Brussels"; // or "CET"
+
+        const scheduleData = [
+            {
+                day: "MONDAY",
+                start: "19:00",
+                end: "23:00",
+                title: "Final Fantasy X-2",
+                subtitle: "Blind Playthrough • Preparation for speedrunning",
+                status: "INVESTIGATION"
+            },
+            {
+                day: "TUESDAY",
+                start: "20:00",
+                end: "23:00",
+                title: "Yu-Gi-Oh! Master Duel",
+                subtitle: "Mastering Trickstar and Shiranui/Mayakashi decks.",
+                status: "ASSIGNED"
+            },
+            {
+                day: "WEDNESDAY",
+                start: null,
+                end: null,
+                title: "Archive Bureau Resupply",
+                subtitle: "Office Closed • Offline",
+                status: "REST DAY"
+            },
+            {
+                day: "THURSDAY",
+                start: "19:00",
+                end: "23:00",
+                title: "Final Fantasy X-2",
+                subtitle: "Blind Playthrough • Preparation for speedrunning",
+                status: "OPEN CASE"
+            },
+            {
+                day: "FRIDAY",
+                start: "19:00",
+                end: "23:00",
+                title: "Sonic Crossworlds Racing",
+                subtitle: "Racing for the truth • Stop the bad guys",
+                status: "PUBLIC EVENT"
+            },
+            {
+                day: "SATURDAY",
+                start: "19:00",
+                end: "22:00",
+                title: "Castlevania: Aria of Sorrow",
+                subtitle: "Speedrun Glitchless Soma • Practicing & Runs",
+                status: "LABORATORY"
+            },
+            {
+                day: "SUNDAY",
+                start: null,
+                end: null,
+                title: "Weekly Debriefing & Maintenance",
+                subtitle: "Docket Prep for Next Cycle",
+                status: "REST DAY"
+            }
+        ];
+
+        function formatLocalTimeRange(startStr, endStr) {
+            if (!startStr || !endStr) return "— — —";
+
+            // Use today's calendar date purely to construct the moment in time
+            const today = new Date().toISOString().split("T")[0];
+
+            // Helper to calculate the difference between your timezone and the viewer's
+            const parseTimeToViewerLocal = (timeString) => {
+                // Construct an ISO date-time string assumed to be in your home timezone
+                const testDate = new Date(`${today}T${timeString}:00`);
+
+                // Formatter to read your source timezone's current offset
+                const sourceFormatter = new Intl.DateTimeFormat("en-US", {
+                    timeZone: BASE_TIMEZONE,
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false
+                });
+
+                // Determine offset shift between base zone and viewer's browser
+                const targetFormatter = new Intl.DateTimeFormat(navigator.language || "en-US", {
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    hour12: false,
+                    timeZoneName: "short"
+                });
+
+                return targetFormatter.formatToParts(testDate);
+            };
+
+            // Formatter directly reading viewer's local device clock
+            const timeFormatter = new Intl.DateTimeFormat(navigator.language || "en-US", {
+                hour: "2-digit",
+                minute: "2-digit",
+                hour12: false
+            });
+
+            const tzFormatter = new Intl.DateTimeFormat(navigator.language || "en-US", {
+                timeZoneName: "short"
+            });
+
+            // Create anchor dates
+            const startObj = new Date(`${today}T${startStr}:00`);
+            const endObj = new Date(`${today}T${endStr}:00`);
+
+            const localStart = timeFormatter.format(startObj);
+            const localEnd = timeFormatter.format(endObj);
+
+            // Extract short timezone abbreviation (e.g. CET, EST, BST)
+            const tzName = tzFormatter.formatToParts(startObj).find(p => p.type === "timeZoneName")?.value || "";
+
+            return `${localStart} – ${localEnd} ${tzName}`.trim();
+        }
+
+        function resolveStatusClass(statusText) {
+            const text = statusText.toUpperCase();
+            if (text.includes("REST") || text.includes("OFFLINE") || text.includes("CLOSED")) {
+                return "status-rest";
+            }
+            if (text.includes("PATROL") || text.includes("TACTICAL") || text.includes("LIVE") || text.includes("ASSIGNED")) {
+                return "status-active";
+            }
+            if (text.includes("CASE") || text.includes("LAB") || text.includes("INVESTIGATION")) {
+                return "status-investigation";
+            }
+            if (text.includes("SPECIAL") || text.includes("EVENT") || text.includes("PUBLIC") || text.includes("DUEL")) {
+                return "status-special";
+            }
+            return "status-active";
+        }
+
+        function renderSchedule() {
+            const container = document.getElementById("schedule-container");
+            if (!container) return;
+
+            container.innerHTML = scheduleData.map(item => {
+                const badgeClass = resolveStatusClass(item.status);
+                const localTime = formatLocalTimeRange(item.start, item.end);
+                const isRest = badgeClass === "status-rest";
+
+                return `
+                    <div class="shelf-row" style="${isRest ? 'opacity: 0.6;' : ''}">
+                        <div class="day-slot">${item.day}</div>
+                        <div class="time-slot">${localTime}</div>
+                        <div class="activity-slot">
+                            <div class="case-title">${item.title}</div>
+                            <div class="case-details">${item.subtitle}</div>
+                        </div>
+                        <div class="status-slot">
+                            <span class="seal-badge ${badgeClass}">${item.status}</span>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        renderSchedule();
+    </script>
+</body>
+
+</html>
