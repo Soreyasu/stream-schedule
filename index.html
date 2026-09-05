@@ -54,8 +54,9 @@
             justify-content: center;
             align-items: center;
             font-family: 'Plus Jakarta Sans', sans-serif;
-            padding: 25px;
+            padding: clamp(12px, 2vw, 25px);
             color: var(--text-primary);
+            overflow-x: hidden;
             overflow-y: auto;
         }
 
@@ -70,10 +71,11 @@
             border-radius: 20px;
             border: 1px solid var(--border-subtle);
             box-shadow: 0 30px 75px -15px rgba(0, 0, 0, 0.9), 0 0 1px 1px rgba(255, 255, 255, 0.05);
-            padding: clamp(30px, 3.75vw, 55px) clamp(30px, 4.3vw, 70px);
+            padding: clamp(20px, 3vw, 55px) clamp(16px, 3.5vw, 70px);
             display: flex;
             flex-direction: column;
             position: relative;
+            box-sizing: border-box;
         }
 
         .header {
@@ -82,9 +84,9 @@
             align-items: center;
             flex-wrap: wrap;
             gap: 20px;
-            padding-bottom: 30px;
+            padding-bottom: 24px;
             border-bottom: 1px solid var(--border-subtle);
-            margin-bottom: 30px;
+            margin-bottom: 24px;
             position: relative;
             width: 100%;
         }
@@ -117,13 +119,13 @@
 
         .main-title {
             font-family: 'Syne', sans-serif;
-            font-size: clamp(30px, 2.75vw, 45px);
+            font-size: clamp(26px, 2.4vw, 45px);
             font-weight: 800;
             letter-spacing: -0.5px;
             color: #ffffff;
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
         }
 
         .main-title span {
@@ -133,16 +135,17 @@
         .date-badge {
             display: inline-flex;
             align-items: center;
-            gap: 15px;
+            gap: 12px;
             background: rgba(255, 255, 255, 0.03);
             border: 1px solid var(--border-subtle);
-            padding: 10px 22px;
+            padding: 8px 18px;
             border-radius: 10px;
             font-family: 'JetBrains Mono', monospace;
+            max-width: 100%;
         }
 
         .date-badge .label {
-            font-size: 21px;
+            font-size: clamp(14px, 1.2vw, 21px);
             font-weight: 700;
             color: var(--gold-accent);
             text-transform: uppercase;
@@ -150,14 +153,14 @@
         }
 
         .date-badge .range {
-            font-size: 23px;
+            font-size: clamp(15px, 1.3vw, 23px);
             font-weight: 500;
             color: #d1d5db;
         }
 
         .sub-title {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 19px;
+            font-size: clamp(14px, 1.1vw, 19px);
             color: var(--text-muted);
             letter-spacing: 1.8px;
             text-transform: uppercase;
@@ -185,7 +188,7 @@
             padding: 10px 20px;
             border-radius: 10px;
             font-family: 'JetBrains Mono', monospace;
-            font-size: 15px;
+            font-size: clamp(13px, 1vw, 15px);
             font-weight: 700;
             letter-spacing: 1.2px;
             text-decoration: none;
@@ -194,8 +197,8 @@
         }
 
         .twitch-btn svg {
-            width: 20px;
-            height: 20px;
+            width: 18px;
+            height: 18px;
             fill: currentColor;
         }
 
@@ -210,29 +213,29 @@
         .shelving-unit {
             display: flex;
             flex-direction: column;
-            gap: 15px;
+            gap: 14px;
             width: 100%;
         }
 
         .shelf-row {
             flex-shrink: 0;
-            min-height: 108px;
+            min-height: 96px;
             display: grid;
-            grid-template-columns: minmax(160px, 220px) minmax(260px, 305px) 1fr auto;
+            grid-template-columns: minmax(130px, 190px) minmax(190px, 260px) minmax(0, 1fr) auto;
             align-items: center;
             position: relative;
             background: var(--surface-glass);
             backdrop-filter: blur(12px);
             border-radius: 12px;
             border: 1px solid var(--border-subtle);
-            padding: 15px clamp(20px, 2.25vw, 35px);
+            padding: 14px clamp(14px, 1.8vw, 30px);
             transition: all 0.25s ease;
         }
 
         .shelf-row:hover {
             background: var(--surface-glass-hover);
             border-color: var(--border-highlight);
-            transform: translateX(5px);
+            transform: translateX(4px);
         }
 
         .shelf-row::before {
@@ -273,71 +276,83 @@
 
         .day-slot {
             font-family: 'Syne', sans-serif;
-            font-size: clamp(20px, 1.5vw, 25px);
+            font-size: clamp(17px, 1.3vw, 24px);
             font-weight: 700;
             color: #ffffff;
             letter-spacing: 0.6px;
+            padding-right: 12px;
+            white-space: nowrap;
         }
 
         .time-slot {
             font-family: 'JetBrains Mono', monospace;
-            font-size: clamp(15px, 1.05vw, 17px);
+            font-size: clamp(13px, 0.95vw, 16px);
             font-weight: 500;
             color: var(--gold-accent);
-            padding: 0 20px;
+            padding: 0 clamp(10px, 1vw, 18px);
             border-left: 1px solid var(--border-subtle);
+            white-space: nowrap;
         }
 
         .activity-slot {
             display: flex;
             flex-direction: column;
             justify-content: center;
-            padding: 0 25px;
+            padding: 0 clamp(12px, 1.2vw, 24px);
             border-left: 1px solid var(--border-subtle);
+            min-width: 0; /* Critical: allows long titles to wrap or truncate instead of expanding parent */
         }
 
         .case-title {
-            font-size: clamp(20px, 1.5vw, 25px);
+            font-size: clamp(17px, 1.25vw, 23px);
             font-weight: 700;
             color: #f8fafc;
             letter-spacing: -0.2px;
+            line-height: 1.25;
+            word-break: break-word;
         }
 
         .case-details {
-            font-size: clamp(16px, 1.05vw, 18px);
+            font-size: clamp(13px, 0.95vw, 16px);
             color: var(--text-muted);
             margin-top: 4px;
+            line-height: 1.3;
+            word-break: break-word;
         }
 
         .status-slot {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding-left: 25px;
+            padding-left: clamp(12px, 1.2vw, 24px);
             border-left: 1px solid var(--border-subtle);
+            flex-shrink: 0;
         }
 
         .seal-badge {
             font-family: 'JetBrains Mono', monospace;
-            font-size: 14px;
+            font-size: clamp(11px, 0.8vw, 13px);
             font-weight: 700;
-            width: 212px;
-            height: 48px;
-            letter-spacing: 1.2px;
+            width: clamp(160px, 11vw, 200px);
+            height: clamp(40px, 2.6vw, 46px);
+            letter-spacing: 1px;
             text-transform: uppercase;
             border-radius: 8px;
             display: flex;
             text-align: center;
             justify-content: center;
             align-items: center;
-            gap: 10px;
+            gap: 8px;
+            padding: 0 8px;
+            white-space: nowrap;
         }
 
         .seal-badge::before {
             content: '';
-            width: 8px;
-            height: 8px;
+            width: 7px;
+            height: 7px;
             border-radius: 50%;
+            flex-shrink: 0;
         }
 
         .status-rest {
@@ -345,67 +360,65 @@
             color: var(--status-rest-text);
             border: 1px solid var(--status-rest-border);
         }
-
-        .status-rest::before {
-            background: var(--status-rest-text);
-        }
+        .status-rest::before { background: var(--status-rest-text); }
 
         .status-active {
             background: var(--status-active-bg);
             color: var(--status-active-text);
             border: 1px solid var(--status-active-border);
         }
-
-        .status-active::before {
-            background: var(--status-active-text);
-            box-shadow: 0 0 8px var(--status-active-text);
-        }
+        .status-active::before { background: var(--status-active-text); box-shadow: 0 0 8px var(--status-active-text); }
 
         .status-investigation {
             background: var(--status-case-bg);
             color: var(--status-case-text);
             border: 1px solid var(--status-case-border);
         }
-
-        .status-investigation::before {
-            background: var(--status-case-text);
-            box-shadow: 0 0 8px var(--status-case-text);
-        }
+        .status-investigation::before { background: var(--status-case-text); box-shadow: 0 0 8px var(--status-case-text); }
 
         .status-special {
             background: var(--status-special-bg);
             color: var(--status-special-text);
             border: 1px solid var(--status-special-border);
         }
+        .status-special::before { background: var(--status-special-text); box-shadow: 0 0 8px var(--status-special-text); }
 
-        .status-special::before {
-            background: var(--status-special-text);
-            box-shadow: 0 0 8px var(--status-special-text);
+        /* Tablet scaling: keeps rows clean without spilling over */
+        @media (max-width: 1280px) {
+            .shelf-row {
+                grid-template-columns: 120px 170px minmax(0, 1fr) auto;
+                padding: 12px 16px;
+            }
+            .day-slot { font-size: 18px; }
+            .time-slot { font-size: 13px; }
+            .case-title { font-size: 18px; }
+            .seal-badge { width: 160px; height: 38px; font-size: 11px; }
         }
 
-        @media (max-width: 900px) {
+        /* Mobile card reflow */
+        @media (max-width: 980px) {
             body {
                 padding: 10px;
             }
 
             .schedule-canvas {
                 min-height: auto;
-                padding: 24px 18px;
+                padding: 20px 14px;
             }
 
             .title-group {
-                align-items: center;
-                text-align: center;
+                align-items: flex-start;
+                width: 100%;
             }
 
             .header {
                 flex-direction: column;
-                align-items: center;
-                gap: 20px;
+                align-items: flex-start;
+                gap: 16px;
             }
 
             .header-actions {
-                align-items: center;
+                align-items: flex-start;
                 margin-left: 0;
                 width: 100%;
             }
@@ -421,12 +434,22 @@
                     "day time"
                     "activity activity"
                     "badge badge";
-                gap: 15px;
-                padding: 18px;
+                gap: 12px;
+                padding: 16px;
+                min-height: auto;
+            }
+
+            .shelf-row:hover {
+                transform: none;
+            }
+
+            .shelf-row.is-today {
+                transform: none;
             }
 
             .day-slot {
                 grid-area: day;
+                padding-right: 0;
             }
 
             .time-slot {
@@ -441,18 +464,19 @@
                 border-left: none;
                 border-top: 1px solid var(--border-subtle);
                 border-bottom: 1px solid var(--border-subtle);
-                padding: 12px 0;
+                padding: 10px 0;
             }
 
             .status-slot {
                 grid-area: badge;
                 border-left: none;
                 padding-left: 0;
+                width: 100%;
             }
 
             .seal-badge {
                 width: 100%;
-                height: 48px;
+                height: 44px;
             }
         }
     </style>
@@ -465,7 +489,7 @@
                 <h1 class="main-title">BUREAU DISPATCH <span>//</span> ROSTER</h1>
                 <div class="date-badge">
                     <span class="label">Docket</span>
-                    <span class="range" id="schedule-date-range">Aug 31 — Sept 6, 2026</span>
+                    <span class="range" id="schedule-date-range">Sept 7 — Sept 13, 2026</span>
                 </div>
             </div>
 
@@ -551,7 +575,6 @@
             }
         ];
 
-        // Accurately converts a time from your broadcast timezone to the viewer's local device clock
         function convertBroadcastTimeToLocal(timeStr) {
             if (!timeStr) return null;
 
@@ -561,10 +584,8 @@
             const month = String(now.getMonth() + 1).padStart(2, "0");
             const day = String(now.getDate()).padStart(2, "0");
 
-            // 1. Initial UTC guess
             const initialUtc = new Date(`${year}-${month}-${day}T${String(targetHours).padStart(2, "0")}:${String(targetMinutes).padStart(2, "0")}:00Z`);
 
-            // 2. Measure what time it actually is in the broadcast timezone at that instant
             const formatter = new Intl.DateTimeFormat("en-US", {
                 timeZone: BASE_TIMEZONE,
                 hour: "numeric",
@@ -576,18 +597,15 @@
             const currentBroadcastHour = parseInt(parts.find(p => p.type === "hour").value, 10) % 24;
             const currentBroadcastMin = parseInt(parts.find(p => p.type === "minute").value, 10);
 
-            // 3. Calculate minute difference and derive the true UTC moment
             const diffMinutes = ((currentBroadcastHour * 60) + currentBroadcastMin) - ((targetHours * 60) + targetMinutes);
             const actualStreamDateUtc = new Date(initialUtc.getTime() - (diffMinutes * 60 * 1000));
 
-            // 4. Format into viewer's local clock
             const localTimeStr = new Intl.DateTimeFormat(navigator.language || "en-US", {
                 hour: "2-digit",
                 minute: "2-digit",
                 hour12: false
             }).format(actualStreamDateUtc);
 
-            // 5. Get viewer's local timezone abbreviation (e.g., EDT, PST, CET)
             const tzName = new Intl.DateTimeFormat(navigator.language || "en-US", {
                 timeZoneName: "short"
             }).formatToParts(actualStreamDateUtc).find(p => p.type === "timeZoneName")?.value || "";
@@ -628,7 +646,6 @@
             const container = document.getElementById("schedule-container");
             if (!container) return;
 
-            // Highlight current active weekday
             const dayMap = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
             const currentDayName = dayMap[new Date().getDay()];
 
