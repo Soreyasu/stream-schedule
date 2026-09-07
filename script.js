@@ -7,16 +7,16 @@ const BASE_TIMEZONE = "Europe/Brussels";
 const scheduleData = [
     {
         day: "MONDAY",
-        start: null,
-        end: null,
+        start: "12:00",
+        end:"22:00",
         title: "Investigations & Study",
         subtitle: "Office Hours Vary • Potential Live Broadcasts",
         status: "STUDY DAY"
     },
     {
         day: "TUESDAY",
-        start: null,
-        end: null,
+        start: "12:00",
+        end:"22:00",
         title: "Investigations & Study",
         subtitle: "Office Hours Vary • Potential Live Broadcasts",
         status: "STUDY DAY"
