@@ -55,9 +55,9 @@ const scheduleData = [
     },
     {
         day: "SOL 07 // SUN",
-        start: "XX:00",
-        end: null,
-        title: "Galactic Coordinate Debrief & Maintenance",
+        start: "13:00",
+        end: "??:??",
+        title: "No Man's Sky // Sonic Racing Crossworlds",
         subtitle: "Starchart Uploads • Cycle Turnover • Community Games",
         status: "ANOMALY 1E09S"
     }
