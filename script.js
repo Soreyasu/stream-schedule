@@ -56,7 +56,7 @@ const scheduleData = [
     {
         day: "SOL 07 // SUN",
         start: "13:00",
-        end: "??:??",
+        end: "22:00",
         title: "No Man's Sky // Sonic Racing Crossworlds",
         subtitle: "Starchart Uploads • Cycle Turnover • Community Games",
         status: "ANOMALY 1E09S"
