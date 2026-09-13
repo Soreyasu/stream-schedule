@@ -123,6 +123,29 @@ function resolveStatusClass(statusText) {
     return "status-active";
 }
 
+function buildShelfRow(item, isToday) {
+    const badgeClass = resolveStatusClass(item.status);
+    const localTime = formatLocalTimeRange(item.start, item.end);
+    const isRest = badgeClass === "status-rest";
+
+    return `
+        <div class="shelf-row ${isToday ? 'is-today' : ''}" style="${isRest && !isToday ? 'opacity: 0.55;' : ''}">
+            <div class="day-slot">
+                ${isToday ? '<span class="live-ping-tag">LIVE CYCLE</span>' : ''}
+                <span class="day-label">${item.day}</span>
+            </div>
+            <div class="time-slot">${localTime}</div>
+            <div class="activity-slot">
+                <div class="case-title">${item.title}</div>
+                <div class="case-details">${item.subtitle}</div>
+            </div>
+            <div class="status-slot">
+                <span class="seal-badge ${badgeClass}">${item.status}</span>
+            </div>
+        </div>
+    `;
+}
+
 function renderSchedule() {
     const container = document.getElementById("schedule-container");
     if (!container) return;
@@ -131,26 +154,26 @@ function renderSchedule() {
     const dayMap = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
     const currentDayAbbr = dayMap[new Date().getDay()];
 
-    container.innerHTML = scheduleData.map(item => {
-        const badgeClass = resolveStatusClass(item.status);
-        const localTime = formatLocalTimeRange(item.start, item.end);
-        const isRest = badgeClass === "status-rest";
-        const isToday = item.day.includes(currentDayAbbr);
+    const activeItem = scheduleData.find(item => item.day.includes(currentDayAbbr));
+    const otherItems = scheduleData.filter(item => !item.day.includes(currentDayAbbr));
 
-        return `
-            <div class="shelf-row ${isToday ? 'is-today' : ''}" style="${isRest && !isToday ? 'opacity: 0.55;' : ''}">
-                <div class="day-slot">${item.day}</div>
-                <div class="time-slot">${localTime}</div>
-                <div class="activity-slot">
-                    <div class="case-title">${item.title}</div>
-                    <div class="case-details">${item.subtitle}</div>
-                </div>
-                <div class="status-slot">
-                    <span class="seal-badge ${badgeClass}">${item.status}</span>
-                </div>
-            </div>
+    let html = "";
+
+    // 1. Line ABOVE today
+    // 2. The TODAY live row
+    // 3. Line BELOW today
+    if (activeItem) {
+        html += `
+            <div class="accent-boundary-line line-top" aria-hidden="true"></div>
+            ${buildShelfRow(activeItem, true)}
+            <div class="accent-boundary-line line-bottom" aria-hidden="true"></div>
         `;
-    }).join('');
+    }
+
+    // 4. The rest of the days underneath
+    html += otherItems.map(item => buildShelfRow(item, false)).join("");
+
+    container.innerHTML = html;
 }
 
 renderSchedule();
