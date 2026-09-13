@@ -4,42 +4,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detective Bureau - Modern Intelligence Roster</title>
+    <title>Galactic Atlas // Planetary Dispatch Terminal</title>
 
-    <!-- Google Fonts -->
+    <!-- Google Fonts: Orbitron for sci-fi terminal headers & Share Tech Mono for telemetry HUD -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
-        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@500;700&family=Plus+Jakarta+Sans:ital,wght@0,400;0,600;0,700;1,400&family=Syne:wght@700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Orbitron:wght@600;800;900&family=Rajdhani:wght@500;600;700&family=Share+Tech+Mono&display=swap"
         rel="stylesheet">
 
-    <!-- Stylesheet -->
     <link rel="stylesheet" href="style.css">
-
-    <!-- Logic -->
     <script src="script.js" defer></script>
 </head>
 
 <body>
     <div class="schedule-canvas">
         <header class="header">
+            <div class="atlas-icon" aria-hidden="true">
+                <div class="atlas-diamond"></div>
+                <div class="atlas-core"></div>
+            </div>
+
             <div class="title-group">
-                <h1 class="main-title">BUREAU DISPATCH <span>//</span> ROSTER</h1>
+                <div class="terminal-prefix">// ATLAS_OS v4.76 // ANOMALY_LOG</div>
+                <h1 class="main-title">EXPEDITION <span>//</span> CYCLE ROSTER</h1>
                 <div class="date-badge">
-                    <span class="label">Docket</span>
+                    <span class="label">STARDATE CYCLE</span>
                     <span class="range" id="schedule-date-range">Sept 7 — Sept 13, 2026</span>
                 </div>
             </div>
 
             <div class="header-actions">
-                <div class="sub-title">Active Investigative Feed</div>
+                <div class="sub-title">SUBSPACE TRANSMISSION RELAY</div>
 
                 <a href="https://twitch.tv/Soreyasu" target="_blank" rel="noopener noreferrer" class="twitch-btn">
                     <svg viewBox="0 0 24 24" aria-hidden="true">
                         <path
                             d="M11.571 4.714h1.715v5.143H11.57zm4.715 0H18v5.143h-1.714zM6 0L1.714 4.286v15.428h5.143V24l4.286-4.286h3.428L22.286 12V0zm14.571 11.143l-3.428 3.428h-3.429l-3 3v-3H6.857V1.714h13.714Z" />
                     </svg>
-                    <span>Twitch Link</span>
+                    <span>COMMS LINK</span>
                 </a>
             </div>
         </header>
