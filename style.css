@@ -251,6 +251,36 @@ body {
     width: 100%;
 }
 
+/* Framing lines above and below Today */
+.accent-boundary-line {
+    width: 100%;
+    height: 2px;
+    background: linear-gradient(90deg, var(--atlas-crimson) 0%, var(--hud-cyan) 35%, transparent 85%);
+    box-shadow: 0 0 10px rgba(255, 42, 75, 0.55);
+    position: relative;
+}
+
+.accent-boundary-line::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: -2.5px;
+    width: 7px;
+    height: 7px;
+    background: var(--atlas-crimson);
+    box-shadow: 0 0 8px var(--atlas-crimson);
+    transform: rotate(45deg);
+}
+
+.accent-boundary-line.line-top {
+    margin-bottom: 2px;
+}
+
+.accent-boundary-line.line-bottom {
+    margin-top: 2px;
+    margin-bottom: 10px;
+}
+
 /* Sci-fi HUD Shelf Row */
 .shelf-row {
     flex-shrink: 0;
@@ -289,24 +319,78 @@ body {
     box-shadow: 0 0 12px var(--hud-cyan);
 }
 
-/* Current Day Highlight */
+/* Featured / Active Day Row (Between Both Lines) */
 .shelf-row.is-today {
-    background: rgba(18, 30, 48, 0.95);
-    border-color: var(--atlas-crimson);
+    min-height: 104px;
+    background: linear-gradient(90deg, rgba(255, 42, 75, 0.16) 0%, rgba(18, 30, 48, 0.95) 45%, rgba(10, 16, 26, 0.95) 100%);
+    border: 1.5px solid var(--atlas-crimson);
     box-shadow:
-        0 0 20px rgba(255, 42, 75, 0.2),
-        inset 0 0 16px rgba(255, 42, 75, 0.08);
-    transform: translateX(6px);
+        0 0 28px rgba(255, 42, 75, 0.25),
+        inset 0 0 20px rgba(255, 42, 75, 0.12);
+    transform: scale(1.006);
+    position: relative;
+    z-index: 2;
+}
+
+.shelf-row.is-today:hover {
+    transform: scale(1.006) translateX(4px);
+    border-color: #ff5e78;
 }
 
 .shelf-row.is-today::before {
     background: var(--atlas-crimson);
-    box-shadow: 0 0 14px var(--atlas-crimson);
+    width: 6px;
+    box-shadow: 0 0 16px var(--atlas-crimson);
 }
 
-.shelf-row.is-today .day-slot {
+.shelf-row.is-today .day-label {
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+}
+
+.shelf-row.is-today .time-slot {
+    font-size: clamp(14px, 1.05vw, 18px);
+    color: #ffd166;
+    text-shadow: 0 0 10px rgba(255, 209, 102, 0.4);
+}
+
+.shelf-row.is-today .case-title {
+    font-size: clamp(20px, 1.35vw, 24px);
+    color: #ffffff;
+    text-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Pulsing "LIVE CYCLE" text tag inside the day slot */
+.live-ping-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 1.8px;
     color: var(--atlas-crimson);
-    text-shadow: 0 0 10px rgba(255, 42, 75, 0.5);
+    font-weight: 700;
+}
+
+.live-ping-tag::before {
+    content: '';
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--atlas-crimson);
+    box-shadow: 0 0 8px var(--atlas-crimson);
+    animation: atlas-pulse 1.8s infinite ease-in-out;
+}
+
+@keyframes atlas-pulse {
+    0%, 100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% {
+        transform: scale(1.4);
+        opacity: 0.35;
+    }
 }
 
 .day-slot {
@@ -317,6 +401,14 @@ body {
     letter-spacing: 1.5px;
     padding-right: 12px;
     white-space: nowrap;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    gap: 4px;
+}
+
+.day-label {
+    display: inline-block;
 }
 
 .time-slot {
