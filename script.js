@@ -59,7 +59,7 @@ const scheduleData = [
         end: null,
         title: "Galactic Coordinate Debrief & Maintenance",
         subtitle: "Starchart Uploads • Cycle Turnover • Community Games",
-        status: "ANOMALY SECTOR 1E09S"
+        status: "ANOMALY 1E09S"
     }
 ];
 
