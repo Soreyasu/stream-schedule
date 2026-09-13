@@ -55,11 +55,11 @@ const scheduleData = [
     },
     {
         day: "SOL 07 // SUN",
-        start: null,
+        start: "XX:00",
         end: null,
         title: "Galactic Coordinate Debrief & Maintenance",
-        subtitle: "Starchart Uploads • Cycle Turnover",
-        status: "STASIS CYCLE"
+        subtitle: "Starchart Uploads • Cycle Turnover • Community Games",
+        status: "ANOMALY SECTOR 1E09S"
     }
 ];
 
