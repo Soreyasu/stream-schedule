@@ -43,7 +43,7 @@ const scheduleData = [
         end: "22:00",
         title: "Final Fantasy X-2",
         subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
-        status: "ACTIVE MISSION"
+        status: "ESSENTIAL RECON"
     },
     {
         day: "SOL 06 // SAT",
