@@ -1,4 +1,4 @@
-const currentWeekRange = "Sept 7 — Sept 13, 2026";
+const currentWeekRange = "Sept 14 — Sept 20, 2026";
 document.getElementById("schedule-date-range").textContent = currentWeekRange;
 
 // Base timezone of broadcast
@@ -6,106 +6,99 @@ const BASE_TIMEZONE = "Europe/Brussels";
 
 const scheduleData = [
     {
-        day: "MONDAY",
-        start: "12:00",
-        end:"22:00",
-        title: "Investigations & Study",
-        subtitle: "Office Hours Vary • Potential Live Broadcasts",
-        status: "STUDY DAY"
-    },
-    {
-        day: "TUESDAY",
-        start: "12:00",
-        end:"22:00",
-        title: "Investigations & Study",
-        subtitle: "Office Hours Vary • Potential Live Broadcasts",
-        status: "STUDY DAY"
-    },
-    {
-        day: "WEDNESDAY",
+        day: "SOL 01 // MON",
         start: null,
         end: null,
-        title: "Archive Bureau Resupply",
-        subtitle: "Office Closed • Offline",
-        status: "REST DAY"
+        title: "Cartography & Tech Archive Synthesis",
+        subtitle: "Signal Analysis Active • Spontaneous Transmission Possible",
+        status: "TELEMETRY LOG"
     },
     {
-        day: "THURSDAY",
+        day: "SOL 02 // TUE",
+        start: null,
+        end: null,
+        title: "Cartography & Tech Archive Synthesis",
+        subtitle: "Signal Analysis Active • Spontaneous Transmission Possible",
+        status: "TELEMETRY LOG"
+    },
+    {
+        day: "SOL 03 // WED",
+        start: null,
+        end: null,
+        title: "Hyperdrive Chamber Refueling",
+        subtitle: "Subspace Comm Offline • Life Support Recalibration",
+        status: "STASIS CYCLE"
+    },
+    {
+        day: "SOL 04 // THU",
         start: "19:00",
         end: "22:00",
         title: "Final Fantasy X-2",
-        subtitle: "Blind Playthrough • Preparation for speedrunning",
-        status: "INVESTIGATION"
+        subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
+        status: "DEEP RECON"
     },
     {
-        day: "FRIDAY",
+        day: "SOL 05 // FRI",
         start: "19:00",
         end: "22:00",
         title: "Final Fantasy X-2",
-        subtitle: "Blind Playthrough • Preparation for speedrunning",
-        status: "OPEN CASE"
+        subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
+        status: "ACTIVE MISSION"
     },
     {
-        day: "SATURDAY",
+        day: "SOL 06 // SAT",
         start: "19:00",
         end: "22:00",
         title: "Castlevania: Aria of Sorrow",
-        subtitle: "Speedrun Glitchless Soma • Practicing & Runs",
-        status: "LABORATORY"
+        subtitle: "Speedrun Glitchless Soma • Warp Vector Precision Runs",
+        status: "ANOMALY SECTOR"
     },
     {
-        day: "SUNDAY",
+        day: "SOL 07 // SUN",
         start: null,
         end: null,
-        title: "Weekly Debriefing & Maintenance",
-        subtitle: "Docket Prep for Next Cycle",
-        status: "REST DAY"
+        title: "Galactic Coordinate Debrief & Maintenance",
+        subtitle: "Starchart Uploads • Cycle Turnover",
+        status: "STASIS CYCLE"
     }
 ];
+
+function getUtcOffset(timeZone, date) {
+    const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone,
+        timeZoneName: "longOffset"
+    }).formatToParts(date);
+
+    const raw = parts.find(p => p.type === "timeZoneName")?.value || "GMT+00:00";
+    return raw.replace("GMT", "") || "+00:00";
+}
 
 function convertBroadcastTimeToLocal(timeStr) {
     if (!timeStr) return null;
 
-    const [targetHours, targetMinutes] = timeStr.split(":").map(Number);
     const now = new Date();
-    const year = now.getFullYear();
-    const month = String(now.getMonth() + 1).padStart(2, "0");
-    const day = String(now.getDate()).padStart(2, "0");
+    const y = now.getFullYear();
+    const m = String(now.getMonth() + 1).padStart(2, "0");
+    const d = String(now.getDate()).padStart(2, "0");
 
-    const initialUtc = new Date(`${year}-${month}-${day}T${String(targetHours).padStart(2, "0")}:${String(targetMinutes).padStart(2, "0")}:00Z`);
-
-    const formatter = new Intl.DateTimeFormat("en-US", {
-        timeZone: BASE_TIMEZONE,
-        hour: "numeric",
-        minute: "numeric",
-        hour12: false
-    });
-
-    const parts = formatter.formatToParts(initialUtc);
-    const currentBroadcastHour = parseInt(parts.find(p => p.type === "hour").value, 10) % 24;
-    const currentBroadcastMin = parseInt(parts.find(p => p.type === "minute").value, 10);
-
-    const diffMinutes = ((currentBroadcastHour * 60) + currentBroadcastMin) - ((targetHours * 60) + targetMinutes);
-    const actualStreamDateUtc = new Date(initialUtc.getTime() - (diffMinutes * 60 * 1000));
+    const offset = getUtcOffset(BASE_TIMEZONE, now);
+    const utcInstant = new Date(`${y}-${m}-${d}T${timeStr}:00${offset}`);
 
     const localTimeStr = new Intl.DateTimeFormat(navigator.language || "en-US", {
         hour: "2-digit",
         minute: "2-digit",
         hour12: false
-    }).format(actualStreamDateUtc);
+    }).format(utcInstant);
 
     const tzName = new Intl.DateTimeFormat(navigator.language || "en-US", {
         timeZoneName: "short"
-    }).formatToParts(actualStreamDateUtc).find(p => p.type === "timeZoneName")?.value || "";
+    }).formatToParts(utcInstant).find(p => p.type === "timeZoneName")?.value || "";
 
-    return {
-        time: localTimeStr,
-        tz: tzName
-    };
+    return { time: localTimeStr, tz: tzName };
 }
 
 function formatLocalTimeRange(startStr, endStr) {
-    if (!startStr || !endStr) return "— — —";
+    if (!startStr || !endStr) return "— — — [OFFLINE]";
 
     const startObj = convertBroadcastTimeToLocal(startStr);
     const endObj = convertBroadcastTimeToLocal(endStr);
@@ -115,16 +108,16 @@ function formatLocalTimeRange(startStr, endStr) {
 
 function resolveStatusClass(statusText) {
     const text = statusText.toUpperCase();
-    if (text.includes("REST") || text.includes("OFFLINE") || text.includes("CLOSED")) {
+    if (text.includes("STASIS") || text.includes("OFFLINE") || text.includes("REST")) {
         return "status-rest";
     }
-    if (text.includes("PATROL") || text.includes("TACTICAL") || text.includes("LIVE") || text.includes("ASSIGNED")) {
+    if (text.includes("ACTIVE") || text.includes("MISSION") || text.includes("EXPEDITION")) {
         return "status-active";
     }
-    if (text.includes("CASE") || text.includes("LAB") || text.includes("INVESTIGATION")) {
+    if (text.includes("RECON") || text.includes("INVESTIGATION") || text.includes("SURFACE")) {
         return "status-investigation";
     }
-    if (text.includes("SPECIAL") || text.includes("EVENT") || text.includes("PUBLIC") || text.includes("STUDY")) {
+    if (text.includes("ANOMALY") || text.includes("SECTOR") || text.includes("TELEMETRY")) {
         return "status-special";
     }
     return "status-active";
@@ -134,17 +127,18 @@ function renderSchedule() {
     const container = document.getElementById("schedule-container");
     if (!container) return;
 
-    const dayMap = ["SUNDAY", "MONDAY", "TUESDAY", "WEDNESDAY", "THURSDAY", "FRIDAY", "SATURDAY"];
-    const currentDayName = dayMap[new Date().getDay()];
+    // Day indexing: 0 = Sun, 1 = Mon ...
+    const dayMap = ["SUN", "MON", "TUE", "WED", "THU", "FRI", "SAT"];
+    const currentDayAbbr = dayMap[new Date().getDay()];
 
     container.innerHTML = scheduleData.map(item => {
         const badgeClass = resolveStatusClass(item.status);
         const localTime = formatLocalTimeRange(item.start, item.end);
         const isRest = badgeClass === "status-rest";
-        const isToday = item.day.toUpperCase() === currentDayName;
+        const isToday = item.day.includes(currentDayAbbr);
 
         return `
-            <div class="shelf-row ${isToday ? 'is-today' : ''}" style="${isRest && !isToday ? 'opacity: 0.6;' : ''}">
+            <div class="shelf-row ${isToday ? 'is-today' : ''}" style="${isRest && !isToday ? 'opacity: 0.55;' : ''}">
                 <div class="day-slot">${item.day}</div>
                 <div class="time-slot">${localTime}</div>
                 <div class="activity-slot">
