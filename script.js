@@ -9,7 +9,7 @@ const scheduleData = [
         day: "SOL 01 // MON",
         start: null,
         end: null,
-        title: "Cartography & Tech Archive Synthesis",
+        title: "Cartography & Tech Archive Synthesis (STUDY)",
         subtitle: "Signal Analysis Active • Spontaneous Transmission Possible",
         status: "TELEMETRY LOG"
     },
@@ -17,7 +17,7 @@ const scheduleData = [
         day: "SOL 02 // TUE",
         start: null,
         end: null,
-        title: "Cartography & Tech Archive Synthesis",
+        title: "Cartography & Tech Archive Synthesis (STUDY)",
         subtitle: "Signal Analysis Active • Spontaneous Transmission Possible",
         status: "TELEMETRY LOG"
     },
@@ -25,15 +25,15 @@ const scheduleData = [
         day: "SOL 03 // WED",
         start: null,
         end: null,
-        title: "Hyperdrive Chamber Refueling",
+        title: "Hyperdrive Chamber Refueling (STUDY)",
         subtitle: "Subspace Comm Offline • Life Support Recalibration",
         status: "STASIS CYCLE"
     },
     {
         day: "SOL 04 // THU",
-        start: "19:00",
+        start: "19:30",
         end: "22:00",
-        title: "Final Fantasy X-2",
+        title: "Final Fantasy X-2 // No Man's Sky // Revising",
         subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
         status: "DEEP RECON"
     },
@@ -41,7 +41,7 @@ const scheduleData = [
         day: "SOL 05 // FRI",
         start: "19:00",
         end: "22:00",
-        title: "Final Fantasy X-2",
+        title: "Final Fantasy X-2 // No Man's Sky // Revising",
         subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
         status: "ESSENTIAL RECON"
     },
@@ -49,7 +49,7 @@ const scheduleData = [
         day: "SOL 06 // SAT",
         start: "19:00",
         end: "22:00",
-        title: "Castlevania: Aria of Sorrow",
+        title: "Castlevania: Aria of Sorrow // No Man's Sky",
         subtitle: "Speedrun Glitchless Soma • Warp Vector Precision Runs",
         status: "ANOMALY SECTOR"
     },
@@ -114,7 +114,7 @@ function resolveStatusClass(statusText) {
     if (text.includes("ACTIVE") || text.includes("MISSION") || text.includes("EXPEDITION")) {
         return "status-active";
     }
-    if (text.includes("RECON") || text.includes("INVESTIGATION") || text.includes("SURFACE")) {
+    if (text.includes("RECON") || text.includes("INVESTIGATION") || text.includes("SURFACE") || text.includes("EXPLORATION")) {
         return "status-investigation";
     }
     if (text.includes("ANOMALY") || text.includes("SECTOR") || text.includes("TELEMETRY")) {
