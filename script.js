@@ -11,7 +11,7 @@ const scheduleData = [
         end: null,
         title: "Cartography & Tech Archive Synthesis (STUDY)",
         subtitle: "Signal Analysis Active • Spontaneous Transmission Possible",
-        status: "TELEMETRY LOG"
+        status: "TELEMETRY X77.2"
     },
     {
         day: "SOL 02 // TUE",
@@ -19,7 +19,7 @@ const scheduleData = [
         end: null,
         title: "Cartography & Tech Archive Synthesis (STUDY)",
         subtitle: "Signal Analysis Active • Spontaneous Transmission Possible",
-        status: "TELEMETRY LOG"
+        status: "TELEMETRY X77.3"
     },
     {
         day: "SOL 03 // WED",
@@ -35,7 +35,7 @@ const scheduleData = [
         end: "22:00",
         title: "Final Fantasy X-2 // No Man's Sky // Revising",
         subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
-        status: "DEEP RECON"
+        status: "RECON X4.145"
     },
     {
         day: "SOL 05 // FRI",
@@ -43,7 +43,7 @@ const scheduleData = [
         end: "22:00",
         title: "Final Fantasy X-2 // No Man's Sky // Revising",
         subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
-        status: "ESSENTIAL RECON"
+        status: "RECON X4.146"
     },
     {
         day: "SOL 06 // SAT",
@@ -51,7 +51,7 @@ const scheduleData = [
         end: "22:00",
         title: "Castlevania: Aria of Sorrow // No Man's Sky",
         subtitle: "Speedrun Glitchless Soma • Warp Vector Precision Runs",
-        status: "ANOMALY SECTOR"
+        status: "XLOG 1E09S.1"
     },
     {
         day: "SOL 07 // SUN",
@@ -59,7 +59,7 @@ const scheduleData = [
         end: "22:00",
         title: "No Man's Sky // Sonic Racing Crossworlds",
         subtitle: "Starchart Uploads • Cycle Turnover • Community Games",
-        status: "ANOMALY 1E09S"
+        status: "XLOG 1E09S.2"
     }
 ];
 
@@ -111,10 +111,10 @@ function resolveStatusClass(statusText) {
     if (text.includes("STASIS") || text.includes("OFFLINE") || text.includes("REST")) {
         return "status-rest";
     }
-    if (text.includes("ACTIVE") || text.includes("MISSION") || text.includes("EXPEDITION")) {
+    if (text.includes("ACTIVE") || text.includes("MISSION") || text.includes("LOG")) {
         return "status-active";
     }
-    if (text.includes("RECON") || text.includes("INVESTIGATION") || text.includes("SURFACE") || text.includes("EXPLORATION")) {
+    if (text.includes("RECON") || text.includes("INVESTIGATION") || text.includes("SURFACE")) {
         return "status-investigation";
     }
     if (text.includes("ANOMALY") || text.includes("SECTOR") || text.includes("TELEMETRY")) {
