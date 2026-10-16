@@ -31,35 +31,35 @@ const scheduleData = [
     },
     {
         day: "SOL 04 // THU",
-        start: "19:30",
-        end: "22:00",
-        title: "Final Fantasy X-2 // No Man's Sky // Revising",
-        subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
-        status: "RECON X4.145"
+      start: null,
+        end: null,
+        title: "Hyperdrive Chamber Refueling (STUDY)",
+        subtitle: "Subspace Comm Offline • Life Support Recalibration",
+        status: "STASIS CYCLE"
     },
     {
         day: "SOL 05 // FRI",
-        start: "19:00",
-        end: "22:00",
-        title: "Final Fantasy X-2 // No Man's Sky // Revising",
-        subtitle: "Blind Surface Expedition • Hyper-Route Optimisation",
-        status: "RECON X4.146"
+       start: null,
+        end: null,
+        title: "Hyperdrive Chamber Refueling (STUDY)",
+        subtitle: "Subspace Comm Offline • Life Support Recalibration",
+        status: "STASIS CYCLE"
     },
     {
         day: "SOL 06 // SAT",
-        start: "19:00",
-        end: "22:00",
-        title: "Castlevania: Aria of Sorrow // No Man's Sky",
-        subtitle: "Speedrun Glitchless Soma • Warp Vector Precision Runs",
-        status: "XLOG 1E09S.1"
+       start: null,
+        end: null,
+        title: "Hyperdrive Chamber Refueling (STUDY)",
+        subtitle: "Subspace Comm Offline • Life Support Recalibration",
+        status: "STASIS CYCLE"
     },
     {
         day: "SOL 07 // SUN",
-        start: "13:00",
-        end: "22:00",
-        title: "No Man's Sky // Sonic Racing Crossworlds",
-        subtitle: "Starchart Uploads • Cycle Turnover • Community Games",
-        status: "XLOG 1E09S.2"
+       start: null,
+        end: null,
+        title: "Hyperdrive Chamber Refueling (STUDY)",
+        subtitle: "Subspace Comm Offline • Life Support Recalibration",
+        status: "STASIS CYCLE"
     }
 ];
 
