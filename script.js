@@ -1,4 +1,4 @@
-const currentWeekRange = "Sept 14 — Sept 20, 2026";
+const currentWeekRange = "Starlog corrupted - please contact star support";
 document.getElementById("schedule-date-range").textContent = currentWeekRange;
 
 // Base timezone of broadcast
